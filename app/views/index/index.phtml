@@ -1,0 +1,1325 @@
+$(document).ready(function(){
+/*************************************** console logs removed and replaced with *****************************/
+/*
+--------------------------------------------------------------------------------------------------------------
+Injections statuses
+--------------------------------------------------------------------------------------------------------------
+| 0 - start                                                                                                   |
+| 1 - JSlibrariesDone                                                                                         |
+| 2 - CSSs are injected                                                                                       |
+| 3 - asset request sent                                                                                      |
+| 4 - aseet respose received (got all good generated HTML)                                                    |
+| 5 - html injected                                                                                           |
+| 6 - all injection done                                                                                      |
+--------------------------------------------------------------------------------------------------------------
+*/
+
+if (consolelogsttatus) console.log("Im coming from Phalcon now :) ");
+
+//***********************************Device orientation******************************************");
+
+function setVideoList() {
+$("#setVideoInnerPlaylist").css("top", $(".tabContects").innerHeight() - 100 + "px");
+}
+
+/****************** switchin on/off javascript event log in the console *************************/
+var consolelogsttatus = true;
+/***********************************************************************************************/
+
+var height = $(window).height();
+var width = $(window).width();
+var r360loaded = false;
+var mouseStillDown = false;
+var imageListWidth = 0;
+var orientation = null;
+var Hover360 = true;
+var customCSS = '';
+
+var oldSites = ["EEA_3_14","BEY_12_7","ETL_0_00","POF_7_17","STA_1_97","BOA_1_15","3WL_10_3","3DO_10_3","SON_3_18"];
+
+if (typeof channelCode == "KIT_1_15") {
+var left = true;
+} else {
+var left = false;
+}
+
+//IS IE
+if (navigator.userAgent.indexOf("Trident")!=-1 || navigator.userAgent.indexOf("MSIE")!=-1 ) {
+var isIE = true;
+}else  var isIE = false;
+
+//*************************************************** Orientation section **********************************/
+if (width > height) {
+//Landscape
+orientation = 2;
+} else {
+//Portrait
+orientation = 1;
+}
+
+
+//*************************************************** Bandwidth measurement **********************************/
+
+var DAY_IN_MS = 1;
+var d1 = new Date();
+
+$.ajax({
+url: "<?php echo $protocol;?><?php echo $loaddomainname;?>/files/bandwidth/100kdummyfile.jpg",
+cache: false,
+success: function (response) {
+
+calculateSpeed();
+
+}
+});
+
+function calculateSpeed() {
+
+var d2 = new Date();
+
+var timediff = (d2 - d1) / DAY_IN_MS
+
+var speed = 100 / (timediff / 1000) * 8;
+
+if (speed > 0 && speed <= 350) {
+quailityType = 2;
+//************** speed + " Bandwidth : GPRS/EDGE -> using quality compression down to 35%" ************
+}
+
+if (speed > 350 && speed <= 800) {
+quailityType = 3;
+//*************** speed + " Bandwidth : G3 -> using quality compression down to 50%" ******************
+}
+
+if (speed > 800 && speed <= 3000) {
+quailityType = 4;
+//*************** speed + " Bandwidth : cheap home DSL / 4G -> using quality compression down to 60%" *
+}
+
+if (speed > 3000) {
+quailityType = 5;
+//*************** speed + " Bandwidth : a good internet lucky user -> using quality compression down to 75%"
+}
+
+mainRMP(quailityType);
+}
+
+
+function mainRMP(quailityType) {
+
+//***********************************START loading******************************************
+
+var jsCounter = 0;
+
+var bypassCashing = Math.round(Math.random()*1000000);
+//("Quality Type : "+quailityType);
+//("random : "+bypassCashing);
+
+var jsLibraries = new Array(
+/************************************** general libraries ***************************************/
+"<?php echo $protocol?><?php echo $loaddomainname;?>/js/rmp/libraries/jquery.js",
+"<?php echo $protocol?><?php echo $loaddomainname;?>/js/rmp/libraries/migeateJqueryto19.js",
+//"<?php echo $protocol?><?php echo $loaddomainname;?>/js/rmp/libraries/jquery.mobile-1.4.5.min.js",
+"<?php echo $protocol?><?php echo $loaddomainname;?>/js/rmp/libraries/jquery.mobile.vmouse.js",
+"<?php echo $protocol?><?php echo $loaddomainname;?>/js/rmp/libraries/jquery.mousewheel.min.js"
+);
+
+
+
+jQuery.noConflict();
+
+if (quailityType > 2) {
+
+jsLibraries.push(
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//
+// Comment : loading in essential RMP JS libraries such as Jquery
+//
+"<?php echo $protocol?><?php echo $loaddomainname;?>/js/rmp/config/config.js",
+"<?php echo $protocol?><?php echo $loaddomainname;?>/js/rmp/libraries/jquery-ui.min.js",
+
+/************************************** RMP ***************************************/
+
+"<?php echo $protocol?><?php echo $loaddomainname;?>/js/rmp/expo360/Expo360.js?Nocache="+bypassCashing,
+
+/************************************** Video ***************************************/
+/************************************** GALLERY ***************************************/
+/***********  Magnify **************/
+"<?php echo $protocol?><?php echo $loaddomainname;?>/js/rmp/gallery/jquery.magnify.js"
+/***********  Lightbox **************/
+,"<?php echo $protocol?><?php echo $loaddomainname;?>/js/rmp/gallery/simple-lightbox.js"
+);
+}
+
+/************************************************************************************************/
+/************* including 3rd party contects as Jquery and other JS libraries ********************/
+
+function loadLibrary() {
+
+jQuery.ajaxSetup({
+cache: true
+});
+
+library = jsLibraries[jsCounter];
+jQuery.getScript(library, function (data, textStatus, jqxhr) {
+//****** library + " *** " + textStatus + " *** " + jqxhr.status); // Data returned
+
+jsCounter++;
+if (jsCounter
+< jsLibraries.length) {
+loadLibrary();
+} else {
+// ***** JS libraries are ready to use ****
+// *********************************Loading CSS******************************************");
+loadCss();
+
+}
+});
+}
+
+/*
+function onlyloadThisLibrary() {
+
+library = jsLibraries[jsCounter];
+$.getScript(library, function (data, textStatus, jqxhr) {
+//**** library + " *** " + textStatus + " *** " + jqxhr.status); // Data returned
+jsCounter++;
+
+if (jsCounter
+< jsLibraries.length) {
+loadLibrary();
+} else {
+//****** JS libraries are ready to use");
+
+}
+
+});
+}*/
+
+loadLibrary();
+
+/****************************************CSS LOADER *********************************************/
+/************************************************************************************************/
+var cssCounter = 0;
+
+var cssFiles = new Array(
+
+//"<?php echo $protocol?><?php echo $loaddomainname;?>/css/bootstrap.min.css"
+
+"<?php echo $protocol?><?php echo $loaddomainname;?>/css/rmp/combined.css"
+
+/*
+// basic css for the rmp framework layout
+,"<?php echo $protocol?><?php echo $loaddomainname;?>/css/rmp/RMPFramework.css"
+
+// css for the rmp video player - attempt 1.
+, "<?php echo $protocol?><?php echo $loaddomainname;?>/css/rmp/RMPVideoPlayer.css"
+
+// css for the rmp image gallery- attempt 1.
+, "<?php echo $protocol?><?php echo $loaddomainname;?>/css/rmp/RMPGallery.css"
+
+// css for the rmp details page - attempt 1.
+, "<?php echo $protocol?><?php echo $loaddomainname;?>/css/rmp/RMPDetailsPage.css"
+
+// css for the rmp hotspots - attempt 1.
+, "<?php echo $protocol?><?php echo $loaddomainname;?>/css/rmp/hotspots.css"
+
+//css for zoom
+//, "<?php echo $protocol?><?php echo $loaddomainname;?>/css/rmp/magnify.css"
+
+//css for lightbox
+, "<?php echo $protocol?><?php echo $loaddomainname;?>/css/rmp/simplelightbox.css"
+*/
+
+
+// css for 360 Expo rotator
+//,"<?php echo $protocol?><?php echo $loaddomainname;?>/css/rmp/main.css"
+
+// css for 360 Expo rotators fancy font - not using - actually not sure what it is for
+//,"<?php echo $protocol?>rich-media-player.timico.dev/css/fonts.css"
+
+// Google Fonts Muli
+//, "<?php echo $protocol?>fonts.googleapis.com/css?family=Muli"
+);
+
+if (oldSites.indexOf(channelCode) == -1) {
+cssFiles.push("<?php echo $protocol?><?php echo $loaddomainname;?>/css/simplegrid/simplegrid-4-5.css");
+//******** simplegrid '4.5'
+} else {
+cssFiles.push("<?php echo $protocol?><?php echo $loaddomainname;?>/css/simplegrid/simplegrid.css");
+//******** original simplegrid
+}
+
+/********************** pulling in a the custom channel css if it's set *******************/
+if (typeof customCSS == 'undefined' || customCSS =='' || customCSS == 'undefined'){
+
+//****** custom css is NOT available and the default css going to be used" + channelCode);
+cssFiles.push("<?php echo $protocol?><?php echo $loaddomainname;?>/css/rmp/channelDefault.css");
+customCSS = 'default';
+
+} else {
+
+//******* custom css is available and has been added to the css queue" + customCSS + channelCode)
+cssFiles.push("<?php echo $protocol?><?php echo $loaddomainname;?>/css/channel/" + channelCode+"/channel.css");
+
+}
+
+/**********************************************************************************************/
+/**********************************************************************************************/
+
+
+function makeid() {
+var text = "";
+var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+for (var i = 0; i < 10; i++)
+text += possible.charAt(Math.floor(Math.random() * possible.length));
+//***** Make ID : "+text);
+return text;
+
+}
+
+
+
+/**********************************************************************************************/
+/**********************************************************************************************/
+
+function loadCss() {
+
+cssContent = cssFiles[cssCounter];
+var cssLink = $("<link rel='stylesheet' type='text/css' href='" + cssContent + "'>");
+$("head").append(cssLink);
+//******** cssContent + " *** StyleSheet has been loaded");
+cssCounter++;
+
+if (cssCounter
+< cssFiles.length) {
+loadCss();
+} else {
+
+loadAssets();
+
+}
+
+}
+
+
+
+/************************************************************************************************/
+/************************************************************************************************/
+
+function loadAssets(args) {
+
+//******** CSS files are ready to use");
+
+var uniquRequstCode = makeid();
+
+/*
+var avilableWitdh = $("#RMPContentDiv").innerWidth();
+
+if ( (orientation==1 && avilableWitdh>0 && avilableWitdh<=280) || (orientation==2 && avilableWitdh>0 && avilableWitdh<=500))
+{
+
+// the image with what we need it 500px
+sizeTypeId = 1;
+
+} else {
+// the image with what we need it 880px
+sizeTypeId = 2;
+}
+
+*/
+
+// bandWith 3G - means image quailty is going to be half of the original image quality
+//var quailityType = 4;
+
+//******* Asset request was sent setting ( size : " + $("#RMPContentDiv").innerWidth() + ", quality : " + quailityType + ")");
+//******* Directory <?php echo $loaddomainname;?>");
+
+
+if (typeof requestMode == 'undefined') {
+requestMode = "production"
+}
+
+rmpHTMLContentCreatorURL = "<?php echo $protocol?><?php echo $loaddomainname;?>/asset/index/" + customCSS+"/" + channelCode+"/"+ productCode + "/" + uniquRequstCode + "/" + orientation + "/" + $("#RMPContentDiv").innerWidth() + "/" + quailityType +"/" +requestMode;
+//****** rmpHTML : "+rmpHTMLContentCreatorURL);
+
+$.ajax({
+url: rmpHTMLContentCreatorURL,
+
+//dataType: "script",
+cache: false,
+success: function (response) {
+/************************************************************************************************/
+/******************************* HTML injector **************************************************/
+
+$("#RMPContentDiv").animate({opacity: 0}, 250, function () {
+$("#RMPContentDiv").hide();
+$("#RMPContentDiv").html(response);
+$("#RMPContentDiv").show();
+$("#RMPContentDiv").css("opacity", "0");
+$("#RMPContentDiv").animate({opacity: 1}, 100,function(){
+
+$(".ui-loader").remove();
+
+/*
+document.getElementById("zoomable").addEventListener("DOMAttrModified", function (ev) {
+}, false)*/
+
+
+/******* GOOGLE ANALYTICS EVENTS *******/
+
+/************ RMP Channel specific **************/
+
+
+if (typeof channelGACode != 'undefined' && channelGACode!="" ){
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga2');
+ga2('create', channelGACode, 'none');
+ga2('send', 'event', 'button', 'click', 'RMP opening tab for - ' + productCode );
+$('#explore-tab').on('click', function() {
+ga2('send', 'event', 'button', 'click', 'RMP explore-tab for - ' + productCode );
+});
+$('#gallery-tab').on('click', function() {
+ga2('send', 'event', 'button', 'click', 'RMP gallery-tab for - ' + productCode);
+});
+$('#video-tab').on('click', function() {
+ga2('send', 'event', 'button', 'click', 'RMP video-tab for - ' + productCode);
+});
+$('#details-tab').on('click', function() {
+ga2('send', 'event', 'button', 'click', 'RMP details-tab for - ' + productCode);
+});
+$('#facebook-share').on('click', function() {
+ga2('send', 'event', 'button', 'click', 'RMP facebook-share for - ' + productCode);
+});
+$('#twitter-share').on('click', function() {
+ga2('send', 'event', 'button', 'click', 'RMP twitter-share for - ' + productCode);
+});
+$('#google-share').on('click', function() {
+ga2('send', 'event', 'button', 'click', 'RMP google-share for - ' + productCode);
+});
+$('#pintrest-share').on('click', function() {
+ga2('send', 'event', 'button', 'click', 'RMP pintrest-share for - ' + productCode);
+});
+
+}
+
+/************ RMP General tracking **************/
+
+ga('send', 'event', 'button', 'click', 'RMP opening tab for - ' + productCode );
+
+$('#explore-tab').on('click', function() {
+ga('send', 'event', 'button', 'click', 'RMP explore-tab for - ' + productCode );
+});
+$('#gallery-tab').on('click', function() {
+ga('send', 'event', 'button', 'click', 'RMP gallery-tab for - ' + productCode);
+});
+$('#video-tab').on('click', function() {
+ga('send', 'event', 'button', 'click', 'RMP video-tab for - ' + productCode);
+});
+$('#details-tab').on('click', function() {
+ga('send', 'event', 'button', 'click', 'RMP details-tab for - ' + productCode);
+});
+$('#facebook-share').on('click', function() {
+ga('send', 'event', 'button', 'click', 'RMP facebook-share for - ' + productCode);
+});
+$('#twitter-share').on('click', function() {
+ga('send', 'event', 'button', 'click', 'RMP twitter-share for - ' + productCode);
+});
+$('#google-share').on('click', function() {
+ga('send', 'event', 'button', 'click', 'RMP google-share for - ' + productCode);
+});
+$('#pintrest-share').on('click', function() {
+ga('send', 'event', 'button', 'click', 'RMP pintrest-share for - ' + productCode);
+});
+
+/***************************************/
+/***************************************/
+/***************************************/
+
+var isthismobile = navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i);
+
+$("#view").css("height",$(".tabContects").innerHeight()-38+"px");
+
+$(".galleryItems").bind("click", function (e) {
+
+/********************************************************************************************************/
+/**********************************************************************************************************/
+/************************************      Gallery Zoom     **********************************************/
+//if (quailityType > 2) {
+
+//****** ($(this).attr("src"));
+$("#zoomable").attr("src",$(this).attr("src"));
+$("#lightbox").attr("href",$(this).attr("src"));
+$(".magnify-lens").remove();
+//******* (isthismobile);
+
+
+if (isthismobile==null){
+if ($(this).attr("zoomable")=="1"){
+$("#zoomable").attr("data-magnify-src",$(this).attr("data-magnify-src"));
+$('#zoomable').magnify();
+}
+else{
+$("#zoomable").attr("data-zoom-image","");
+$(".magnify-lens").remove();
+}
+
+}
+//else{
+//                                $(".magnify-lens").remove();
+//                            }
+// }
+
+imagereposition();
+
+});
+
+/*****************tab windows handling************************/
+
+$(".tab").click(function () {
+
+r360loaded = 1;
+//******* (r360loaded);
+if (r360loaded) {
+
+
+/********************************************************************************************************/
+/**********************************************************************************************************/
+/************************************      Gallery Zoom     **********************************************/
+
+
+//****** ("click event");
+$("#galeryItemsWrapperCenter").children().first().click();
+
+//****** ($(this).attr("tabindex"));
+
+$(".tab").removeClass("active");
+$(".tab[tabindex=" + $(this).attr("tabindex") + "]").addClass("active");
+$(".tabContent").hide();
+$(".tabContent[tabindex=" + $(this).attr("tabindex") + "]").css("opacity", "0");
+$(".tabContent[tabindex=" + $(this).attr("tabindex") + "]").show();
+$(".tabContent[tabindex=" + $(this).attr("tabindex") + "]").animate({opacity: 1}, 600);
+
+setVideoList();
+
+var myVar = null;
+var mouseState = 0;
+
+/*****************************************/
+
+$(".videoChange").click(function(){
+
+//****** ($(this).attr("path"));
+//****** ($(this).attr("filename"));
+//****** ($(this).attr("index"));
+
+$("#video1").attr("videoIndex")
+$("#video1").attr("videoindex",$(this).attr("key"));
+setVideo($(this).attr("path"),$(this).attr("filename"),$(this).attr("index"),$(this).attr("src"));
+
+});
+
+$(".tabContent").hover(function () {
+
+$("#setVideoInnerPlaylistLayer").animate({
+opacity: 1
+}, 600);
+mouseState = 1;
+//****** ("in" + mouseState);
+
+myVar = setTimeout(function () {
+
+if (mouseState == 1) {
+$("#setVideoInnerPlaylistLayer").animate({
+opacity: 0
+}, 600);
+
+//****** ("timeout" + mouseState);
+
+}
+
+}, 5000);
+
+}, function () {
+
+mouseState = 0;
+$("#setVideoInnerPlaylistLayer").animate({
+opacity: 0
+}, 200, function () {
+
+$("#setVideoInnerPlaylistLayer").clearQueue();
+//****** ("clearQueue");
+});
+
+//****** ("out" + mouseState);
+clearTimeout(myVar);
+
+});
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//
+// Comment : Pause Video - if playing when change tag and it s not the video one
+//
+
+if($(this).attr("tabindex")!="1"){
+$('#video1').trigger("pause");
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//
+// Comment : Switching of/on 360 rotator when change tab
+//
+
+if($(this).attr("tabindex")=="0"){
+Hover360 = true;
+//expo.updateImage();
+
+} else {
+Hover360 = false;
+}
+
+//***** ("Hover360 status"+$(this).attr("Hover360"));
+
+//***** ("changed tab"+$(this).attr("tabindex"));
+
+if($(this).attr("tabindex")=="1"){
+
+//***** ("Inside here "+$(this).attr("tabindex"));
+
+if ($(".galleryItems[imageindex=0]").length == 1 ){
+if ($(".galleryItems[imageindex=0]").attr("zoomable")=="1"){
+/*
+var ez = $('#zoomable').data('elevateZoom');
+ez.changeState("enable");*/
+
+$(".galleryItems[imageindex=0]").click();
+
+}}
+recalculateImageSliderWidth();
+$(".zoomContainer").show();
+
+//***** ("zoomContainer has set to be visible");
+} else {
+
+//***** ("close all");
+$(".zoomContainer").hide();
+//***** ("zoomContainer has set hidden");
+
+}
+
+}
+
+
+recalculateHeight();
+});
+
+
+$(window).focus(function() {
+Hover360 = true;
+//expo.updateImage();
+});
+
+//$(window).blur(function() {
+//	Hover360 = false;
+//	$(".magnify-lens").hide();
+//});
+
+
+if (!isIE) {
+$("body:not(#zoomable)").mouseover(function(){
+$(".magnify-lens").hide();
+});
+}
+
+
+recalculateImageSliderWidth();
+recalculateHeight();
+
+function recalculateImageSliderWidth(){
+
+//***** ("zoom stuff done");
+
+if ($("#zoomable").attr("zoomable")=="0"){
+/*
+$(".zoomLens").css("background-image","");
+$(".zoomLens").css("border","none");*/
+//***** ("removed zooming");
+$(".magnify-lens").remove();
+
+} else {
+
+//***** ("BROWSER : "+isthismobile);
+
+if (isthismobile==null){
+if (quailityType > 2) {
+//*****	$('#zoomable').magnify();
+}
+} else {
+$(".magnify-lens").remove();
+}
+
+}
+
+
+$("#goLeft,#goRight,#goUp,#goDown").mouseup(function(event) {
+mouseStillDown = false;
+//************************** mouseUp *******************************");
+});
+
+imageListWidth = 0;
+imageListHeight = 0;
+//***** ("function was called");
+$("#galeryItemsWrapperCenter>ul>li").each(function(i,value){
+imageListWidth+=$(value).innerWidth();
+imageListHeight+=$(value).innerHeight();
+
+});
+
+//***** ("imageListWidth:"+imageListWidth);
+//***** ("imageListHeight:"+imageListHeight);
+/*
+if (imageListWidth>$("#sliderArea").innerWidth()) $("#goLeft,#goRight").show();
+else  $("#goLeft,#goRight").hide();
+*/
+
+//***** ("imageListHeight:"+imageListHeight);
+/*
+if (#galeryItemsWrapperCenter>ul>li:first").css("top") >= -1px)
+$("#galeryItemsWrapperCenter>ul>li").animate({
+display: "block"
+*/
+
+}
+
+/***************************** gallery slider functions **********************************************/
+/***************************** gallery slider functions **********************************************/
+/***************************** gallery slider functions **********************************************/
+
+
+function slideRight(){
+
+mouseStillDown = true;
+//***** ("slide Right");
+var sliderArea = $("#sliderArea").innerWidth();
+var extra  = imageListWidth-sliderArea;
+//recalculateImageSliderWidth();
+//***** ($("#galeryItemsWrapperCenter>ul>li:first").css("left") + " / "+ extra );
+if (!$("#galeryItemsWrapperCenter>ul>li:first").is(':animated')){
+if (parseInt($("#galeryItemsWrapperCenter>ul>li:first").css("left"))>(extra*(-1)) ){
+$("#galeryItemsWrapperCenter>ul>li").animate({
+left: "-=100",
+}, 600, function() {
+
+keepSlidingRight();
+
+});
+
+} else {
+
+//***** ("it hit the limit");
+
+}
+}
+}
+
+function keepSlidingRight(){
+
+if (mouseStillDown){
+slideRight();
+} else {
+return false;
+}
+
+}
+
+$("#goRight").mousedown(function(){
+
+slideRight();
+
+});
+
+function slideLeft(){
+
+mouseStillDown = true;
+//***** ("slide Left");
+if (!$("#galeryItemsWrapperCenter>ul>li:first").is(':animated')){
+//recalculateImageSliderWidth();
+//***** (parseInt($("#galeryItemsWrapperCenter>ul>li:first").css("left")));
+
+if (parseInt($("#galeryItemsWrapperCenter>ul>li:first").css("left"))<0 ){
+$("#galeryItemsWrapperCenter>ul>li").animate({
+left: "+=100",
+}, 600, function() {
+
+keepSlidingLeft();
+});
+
+} else {
+//***** ("it hit the limit");
+}
+}
+}
+
+function keepSlidingLeft(){
+if (mouseStillDown){
+slideLeft();
+} else {
+return false;
+}
+
+}
+
+$("#goLeft").mousedown(function(){
+
+slideLeft();
+
+});
+
+function slideDown(){
+
+mouseStillDown = true;
+
+var sliderArea = $("#sliderArea").innerHeight();
+var extra  = imageListHeight-sliderArea;
+//recalculateHeight();
+
+//***** ("slide down");
+//***** ("imageListHeight " + imageListHeight);
+//***** ("sliderArea " + sliderArea);
+
+var csstop = parseInt($("#galeryItemsWrapperCenter>ul>li:first").css("top"))+108;
+
+//***** (csstop);
+//***** ("extra " + extra);
+
+if (!$("#galeryItemsWrapperCenter>ul>li:first").is(':animated')){
+
+//if (parseInt($("#galeryItemsWrapperCenter>ul>li:first").css("top"))>(extra*(-1)) ){
+
+if (csstop <= 0){
+$("#galeryItemsWrapperCenter>ul>li").animate({
+top: "+=108",
+}, 500, function() {
+
+keepSlidingDown();
+
+});
+
+} else {
+
+//***** ("it hit the limit Down");
+
+}
+}
+}
+
+function keepSlidingDown(){
+
+if (mouseStillDown){
+setInterval(slideDown(), 100);
+//slideDown();
+} else {
+return false;
+}
+}
+
+$("#goDown").mousedown(function(){
+
+slideDown();
+
+});
+
+function slideUp(){
+
+mouseStillDown = true;
+//***** ("slide Up");
+
+if (!$("#galeryItemsWrapperCenter>ul>li:first").is(':animated')){
+
+//recalculateHeight();
+
+//***** ("css Top " +parseInt($("#galeryItemsWrapperCenter>ul>li:first").css("top")));
+//***** ("Img Height " +parseInt($(".tab").css("height")));
+//***** ("Number of li s" +parseInt($( "#galeryItemsWrapperCenter>ul>li" ).size()));
+//if (parseInt($("#galeryItemsWrapperCenter>ul>li:first").css("top"))<0 ) {
+//var css_bottom = parseInt($("#galeryItemsWrapperCenter>ul>li:last").css("top"));
+
+var css_bottom = parseInt($("#galeryItemsWrapperCenter>ul>li:last").css("top"))+108;
+
+var sliderHeight = parseInt($(".tab").css("height")) *parseInt($( "#galeryItemsWrapperCenter>ul>li" ).size());
+
+//***** ("Height Area "+sliderHeight);
+
+var sliderArea = parseInt($("#sliderArea").css("height"));
+
+//***** ("css bottom "+ css_bottom);
+
+if (css_bottom >= sliderHeight*-1+sliderArea){
+$("#galeryItemsWrapperCenter>ul>li").animate({
+top: "-=108",
+}, 500, function() {
+keepSlidingUp();
+})
+
+} else {
+
+//***** ("it hit the limit Up")
+
+}
+}
+}
+
+function keepSlidingUp(){
+if (mouseStillDown){
+setInterval(slideUp(), 100);
+//slideUp();
+} else {
+return false;
+}
+}
+
+$("#goUp").click(function(){
+$("#goDown").show();
+});
+
+$("#goUp").mousedown(function(){
+
+slideUp();
+
+});
+
+/********************************************************************************************************/
+/********************************************************************************************************/
+/******************************** switching ON tabs *****************************************************/
+
+let blHasExpo = false;
+$('.tab').each(function() {
+if($(this).attr('tabindex') == 0){
+blHasExpo = true;
+}
+});
+
+if (quailityType > 2 && blHasExpo === true) {
+var expo = new Expo360({
+xml: "<?php echo $protocol;?><?php echo $loaddomainname;?>/assets/xml/360RotatorRequest" + uniquRequstCode + ".xml",
+where: "#viewer"
+});
+//***** (expo);
+window.expo = expo;
+
+
+//expo.goTo(50);
+
+if (firstGoFrameDegree!=0){
+
+expo.goTo( Math.round(firstGoFrameDegree/76 *360 ));
+}
+
+$("#viewer>div>div").first().css("min-height", "150px");
+
+}
+
+$(window).resize(function(){
+
+recalculateHeight();
+//***** ("resize");
+$("#view").css("height",$(".tabContects").innerHeight()-38+"px");
+
+});
+
+function recalculateHeight() {
+
+recalculateImageSliderWidth();
+var tabcontentWidth = Math.round($("#tabContects").innerWidth()*0.78);
+
+//if (expo!=undefined) expo.updateThisHotspots();
+
+$("#details-page").css("height",$("#tabContects").innerHeight());
+
+//$("#details-page").css("height",Math.round($("#tabContects").innerHeight()*0.95)+"px");
+
+if ($("#imagesHolder").innerWidth()<478){
+$("#hotspotButton0").css("opacity",0);
+if (expo!=undefined) expo.closeLastHotspot();
+
+}else{
+$("#hotspotButton0").css("opacity",1)
+}
+
+var isthismobile = navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i);
+var WindowWidth = $(window).width();
+
+//***** ("Window Width : "+WindowWidth);
+
+if (WindowWidth<700 && isthismobile!=null ){
+
+/////////////////////////////////////////////////////////////////////////
+//
+//  Handling Mobile version
+//
+
+if ($("#zoomableWrapper>div").length==3){
+$("#zoomableWrapper>div:nth(0)").css("width","11%")
+$("#zoomableWrapper>div:nth(2)").css("width","11%")
+$("#zoomableWrapper>div:nth(1)").css("width","76%")
+
+}
+
+//***** ("below mobile");
+//$("#galeryItemsWrapper").hide();
+
+var tabcontentWidth = Math.round($("#tabContects").innerWidth()*0.78);
+
+//$("#zoomableWrapper").css("height",tabcontentWidth+"px");
+
+$(".VideoPlaylist").css("height",(tabcontentWidth*0.19)+"px");
+$("#VideoPlaylist>img").css("height",(tabcontentWidth*0.19)+"px");
+$("#setVideoInnerPlaylistLayer1").css("height",(tabcontentWidth*0.19)+"px");
+
+
+
+//$("#goLeftMobile").css("margin-top",(tabcontentWidth/2-17)+"px");
+//$("#goRightMobile").css("margin-top",(tabcontentWidth/2-17)+"px");
+
+$("#goLeftMobile").show();
+$("#goRightMobile").show();
+
+
+if ($(".tabSection").innerHeight()==0) {
+//***** ("no tabs");
+$("#tabContects").css("height","unset");
+} else {
+//***** ("there are tabs");
+$("#tabContects").css("height",tabcontentWidth+"px");
+}
+
+$("#tabContects").css("margin","0.2em 0");
+
+$("#zoomableWrapper").css("height",(tabcontentWidth*0.100)+"px");
+
+/*
+if ($('#zoomable').length==1){
+var ez = $('#zoomable').data('elevateZoom');
+ez.changeState("disable");
+}*/
+
+//***** ("here we go");
+
+$(".zoomContainer").hide();
+//***** ("mobile mode on");
+
+}else{
+
+//***** ("above mobile");
+
+if ($("#zoomableWrapper>div").length==3){
+$("#zoomableWrapper>div:nth(0)").css("width","0")
+$("#zoomableWrapper>div:nth(2)").css("width","0")
+$("#zoomableWrapper>div:nth(1)").css("width","98%")
+}
+
+var tabcontentWidth = Math.round($("#tabContects").innerWidth()*0.78);
+//***** ("mobile mode off");
+
+//***** ("tab.active"+($(".tab.active").attr("tabindex")));
+
+if ($(".tab.active").attr("tabindex")==3) $(".zoomContainer").show();
+$("#setVideoInnerPlaylistLayer1").css("height",(tabcontentWidth*0.19)+"px");
+if ($(".galleryItems").length>3) $("#galeryItemsWrapper").show();
+
+$("#goLeftMobile").parent().css("height","10px");
+$("#goRightMobile").parent().css("height","10px");
+
+$("#goLeftMobile").hide();
+$("#goRightMobile").hide();
+
+$("#VideoPlaylist>img").css("height",(tabcontentWidth*0.19)+"px");
+
+$("#tabContects").css("height",tabcontentWidth+"px");
+//$("#zoomableWrapper").css("height",(tabcontentWidth*0.8)+"px");
+
+
+
+/********************************************************/
+//$("#zoomable").css("max-height","390px");
+//$("#zoomable").css("max-height",(tabcontentWidth*0.75)+"px");
+$("#zoomable").css("max-height", $("#tabContects").innerHeight() +"px");
+
+if ($(".galleryItems").length>1)
+//$("#zoomable").css("height",(tabcontentWidth*0.748)+"px");
+//$(".galleryItems").css("height",(tabcontentWidth*0.14)+"px");
+$("#details-page").css("height",(tabcontentWidth*0.785)+"px");
+//$("#details-page").css("height",$("#tabContects").innerHeight());
+$("#galleryItems>img").css("height",(tabcontentWidth*0.19)+"px");
+$("#goLeft").css("margin-top",(tabcontentWidth*0.19/2-17)+"px");
+$("#goRight").css("margin-top",(tabcontentWidth*0.19/2-17)+"px");
+}
+
+imagereposition();
+
+}
+
+$( ".tabContent[tabindex=3]" ).on( "swipeleft", function(){
+
+$("#goRightMobile").click()
+
+} );
+
+$(".tabContent[tabindex=3]" ).on( "swiperight", function(){
+
+$("#goLeftMobile").click()
+
+} );
+
+$("#goLeftMobile").click(function(){
+
+if ($(this).css("opacity")!="1") {
+return false;
+}
+
+var currentImage = $("#zoomable").attr("actualImage");
+var nextImageIndex = currentImage/1-1;
+
+//***** (currentImage+" - "+nextImageIndex);
+
+if ( $(".galleryItems[imageIndex="+nextImageIndex+"]").length!=0){
+
+//***** ($(".galleryItems[imageIndex="+nextImageIndex+"]").length);
+
+$("#zoomable").attr("src",$(".galleryItems[imageIndex="+nextImageIndex+"]").attr("src"));
+$("#zoomable").attr("data-magnify-src",$(".galleryItems[imageIndex="+nextImageIndex+"]").attr("data-magnify-src"));
+$("#zoomable").attr("actualImage",nextImageIndex);
+//////////////////////
+
+if ($(".galleryItems[imageIndex="+1+"]").attr("zoomable")=="0"){
+$(".magnify-lens").remove();
+} else {
+
+if (isthismobile==null){
+$('#zoomable').magnify();
+
+} else {
+$(".magnify-lens").remove();
+
+}
+
+}
+//////////////////////
+var nextImageIndexLeft = nextImageIndex/1-1;
+if ( $(".galleryItems[imageIndex="+nextImageIndexLeft+"]").length==0){
+$("#goLeftMobile").css("opacity","0.2");
+} else $("#goLeftMobile").css("opacity","1");
+
+
+var nextImageIndexRight = nextImageIndex/1+1;
+if ( $(".galleryItems[imageIndex="+nextImageIndexRight+"]").length==0){
+$("#goRightMobile").css("opacity","0.2");
+} else $("#goRightMobile").css("opacity","1");
+
+} else {
+//change image to not active
+}
+
+getRealheight()
+});
+
+$("#goRightMobile").click(function(){
+
+if ($(this).css("opacity")!="1") {
+return false;
+}
+
+var currentImage = $("#zoomable").attr("actualImage");
+var nextImageIndex = currentImage/1+1;
+
+//***** (currentImage+" - "+nextImageIndex);
+
+if ( $(".galleryItems[imageIndex="+nextImageIndex+"]").length!=0){
+
+//***** ($(".galleryItems[imageIndex="+nextImageIndex+"]").length);
+$("#zoomable").attr("src",$(".galleryItems[imageIndex="+nextImageIndex+"]").attr("src"));
+$("#zoomable").attr("data-magnify-src",$(".galleryItems[imageIndex="+nextImageIndex+"]").attr("data-magnify-src"));
+$("#zoomable").attr("actualImage",nextImageIndex);
+//////////////////////
+
+if ($(".galleryItems[imageIndex="+1+"]").attr("zoomable")=="0"){
+$(".magnify-lens").remove();
+} else {
+
+if (isthismobile==null){
+$('#zoomable').magnify();
+
+} else {
+$(".magnify-lens").remove();
+
+}
+
+}
+//////////////////////
+var nextImageIndexLeft = nextImageIndex/1-1;
+if ( $(".galleryItems[imageIndex="+nextImageIndexLeft+"]").length==0){
+$("#goLeftMobile").css("opacity","0.2");
+} else $("#goLeftMobile").css("opacity","1");
+
+var nextImageIndexRight = nextImageIndex/1+1;
+if ( $(".galleryItems[imageIndex="+nextImageIndexRight+"]").length==0){
+$("#goRightMobile").css("opacity","0.2");
+} else $("#goRightMobile").css("opacity","1");
+
+} else {
+//change image to not active
+}
+
+getRealheight()
+});
+
+/********************************************************************************************************/
+/********************************************************************************************************/
+/****************************************Positioning the video playlist**********************************/
+
+$(window).resize(function () {
+$("#setVideoInnerPlaylist").css("top", $(".tabContects").innerHeight() - 80 + "px")
+$("#setVideoInnerPlaylist").css("top", $(".tabContects").innerHeight() - 80 + "px")
+
+});
+
+/*********************************************************************************************/
+/*********************************************************************************************/
+/********************************* Clickable Menu ****************************************/
+
+$('#menu_social_share').click(function (e) {
+$(".slideMenus").slideUp(200);
+$("#menu-items").slideToggle(200);
+
+});
+
+$('#menu_tabs').click(function () {
+$(".slideMenus").slideUp(200);
+$("#social-links").slideToggle(200);
+
+});
+
+$(".click-nav").hover(function(){
+
+},
+function(){
+$(".slideMenus").slideUp(200);
+//***** ("left the menu ");
+})
+
+});
+
+});
+
+}
+});
+
+}
+}
+
+
+function setVideo(filePath,fileName,index,poster){
+
+//***** ("index:"+index);
+//***** (poster);
+
+$("#video1").attr("index",index);
+$('#video1').attr('src','<?php echo $protocol?>'+filePath+'/assets/videos/'+fileName);
+$('#video1').attr('poster',poster);
+$('#video1').load();
+}
+
+
+function getRealheight(){
+
+if (($(".tabSection>div").length != 0 && $(".active#gallery-tab").length == 1 ) ||
+($(".tabSection>div").length == 0 && $(".galleryItems").length!=0 )) {
+
+var thisImageHeight = $("#zoomable").innerHeight();
+//***** (thisImageHeight);
+if (thisImageHeight!="0") {
+
+//***** ("skip adjustion");
+var tabcontentWidth = Math.round($("#tabContects").innerWidth()*0.68);
+var thisImageHeight = $("#zoomable").innerHeight();
+//$("#zoomable").css("padding-top",Math.round(((tabcontentWidth-thisImageHeight)/2))+"px");
+// $(".magnify-lens").css("margin-top",Math.round(((tabcontentWidth-thisImageHeight)/2))+"px");
+
+} else {
+//***** ("has not been set to middle");
+}
+
+} else {
+
+//***** ("skip adjustion");
+var tabcontentWidth = Math.round($("#tabContects").innerWidth()*0.68);
+var thisImageHeight = $("#zoomable").innerHeight();
+//$("#zoomable").css("padding-top",Math.round(((tabcontentWidth-thisImageHeight)/2))+"px");
+//$(".magnify-lens").css("margin-top",Math.round(((tabcontentWidth-thisImageHeight)/2))+"px");
+
+}
+
+}
+
+function imagereposition(){
+
+var isthismobile = navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i);
+//***** (navigator.userAgent);
+//alert("image resize");
+
+//alert($("#zoomable").attr("src"))
+//alert("1");
+
+var tabcontentWidth = Math.round($("#tabContects").innerWidth()*0.68);
+
+if ($("#zoomable").length==0) {
+//alert("image is not there yet");
+} else {
+
+if ($(".galleryItems").length>1) {
+
+/*
+if ($("#tabContects").innerWidth()<400) var maxheight = tabcontentWidth+"px"
+else var maxheight = (tabcontentWidth*0.75)+"px";*/
+
+var maxheight = $("#tabContects").innerHeight()
+
+} else {
+//var maxheight = "450px";
+var maxheight = $("#tabContects").innerHeight()
+}
+
+$("#zoomable").animate({
+"padding-top": "20%",
+"margin-top": "-15%",
+"max-width": "100%"
+},0,function(){
+getRealheight()
+})
+
+}
+
+
+
+
+
+
+
+
+}
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', "<?=RMP_PRIVATE_GA_CODE?>", 'none');
+//ga('send', 'pageview');
+
+})

@@ -1,0 +1,54 @@
+body {
+    /*font-family: "Arial Narrow";*/
+    /*background-color: #cccccc;*/
+}
+
+
+
+
+/********************************************************/
+/******************** tab settings **********************/
+/********************************************************/
+
+.tab{
+    /*height: 85px;*/
+    background-color: #cccccc !important;
+    /*line-height: 85px;*/
+    /*font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;*/
+    font-size:1.2em;
+    color:#4D4D4D;
+    border-radius: 0px;
+    min-width: 125px;
+
+}
+
+.tab:hover{
+    background-color: #007d7d !important;
+}
+
+
+.tab.active{
+    /*background-color: #007d7d !important;*/
+    color: #fff;
+}
+
+.tab.active:hover {
+    background-color: #007d7d !important;
+    color: #4d4d4d;
+}
+
+/********************************************************/
+/******************** zoom lens *************************/
+/********************************************************/
+
+.zoomLens{
+    border: 4px solid #007d7d !important;
+}
+
+a:hover, a:focus {
+    color: #cccccc;
+}
+
+h1 {
+    font-size: 34px;
+}

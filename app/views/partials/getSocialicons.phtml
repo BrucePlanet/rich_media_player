@@ -1,0 +1,25 @@
+<div class="social-icons-holder col-10-12 tab-col-10-12 mobile-col-1-1">
+	<div id="social-icons-title" class="col-3-12 tab-col-3-12 mobile-col-1-6 noPad">
+		<strong>Share page: </strong>
+		<?php $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>
+	</div>
+	<div class="col-1-12 tab-col-1-12 mobile-col-1-6 noPad">
+		<!--<p>Facebook</p>-->
+		<a class="social-icons" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $actual_link ?>" target="_blank">
+			<i class="nm-font nm-font-facebook"></i>
+		</a>
+	</div>
+	<div class="col-1-12 tab-col-1-12 mobile-col-1-6 noPad">
+		<!--p>Twitter</p>-->
+		<a class="social-icons" href="https://twitter.com/share?url=<?php echo $actual_link ?>" target="_blank">
+			<i class="nm-font nm-font-twitter"></i>
+		</a>
+	</div>
+	<div class="col-1-12 tab-col-1-12 mobile-col-1-6 noPad">
+		<!--<p>Pintest</p>-->
+		<a class="social-icons" href="http://pinterest.com/pin/create/button/?url=<?php echo $actual_link ?>"
+		   target="_blank">
+			<i class="nm-font nm-font-pinterest-p"></i>
+		</a>
+	</div>
+</div>

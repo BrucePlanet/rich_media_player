@@ -1,0 +1,36 @@
+/********************************************************/
+/******************** tab settings **********************/
+/********************************************************/
+
+.tab{
+    height: 30px;
+    background-color: #F5F5F5;
+    line-height: 30px;
+    font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+    font-size:1.2em;
+    color:#4D4D4D;
+    border-radius: 3px;
+}
+
+.tab:hover{
+    background-color: #cccccc;
+}
+
+
+.tab.active{
+    background-color: #696969;
+    color: #fff;
+}
+
+.tab.active:hover {
+    background-color: #cccccc;
+    color: #4d4d4d;
+}
+
+/********************************************************/
+/******************** zoom lens *************************/
+/********************************************************/
+
+.zoomLens{
+    border: 4px solid #007d7d !important;
+}

@@ -1,0 +1,235 @@
+<script>
+    var firstGoFrameDegree = <?php if (!isset($firstGo) || $firstGo == "null" || $firstGo == null || $firstGo == "") echo "0"; else echo $firstGo;?>;
+
+</script>
+
+<?php
+
+$explore = false;
+$gallery = false;
+$video = false;
+$details = false;
+
+$exploreActive = "hideAway";
+$exploreActiveT = "";
+$galleryActive = "active";
+$galleryActiveT = "";
+$videoActive = "hideAway";
+$videoActiveT = "";
+$detailsActive = "hideAway";
+$detailsActiveT = "";
+
+$tabs = 0;
+
+
+if (isset($checkAllData["360Settings"]["frames"])) {
+    if ($checkAllData["360Settings"]["frames"] > 0) {
+        $tabs++;
+        $explore = true;
+        $exploreActive = "active";
+        $exploreActiveT = "active";
+        $galleryActive = "hideAway";
+    }
+}
+
+if (isset($checkAllData["galleryImageUrls"]["small"])) {
+    if (count($checkAllData["galleryImageUrls"]["small"]) > 0) {
+        $tabs++;
+        $gallery = true;
+
+        if (!$explore) {
+            $galleryActive = "active";
+            $galleryActiveT = "active";
+            $videoActiveT = "hideAway";
+        }
+    }
+}
+
+if (isset($checkAllData["videoUrs"]["video"])) {
+    if (count($checkAllData["videoUrs"]["video"]) > 0) {
+
+        $tabs++;
+        $video = true;
+        if (!$explore && !$gallery) {
+            $videoActive = "active";
+            $videoActiveT = "active";
+        }
+
+    }
+}
+
+if (isset($checkAllData["360Settings"]["details"])) {
+    if (count($checkAllData["360Settings"]["details"]) > 0 && $checkAllData["360Settings"]["frames"] > 0) {
+        //if (true){
+        $tabs++;
+        $details = true;
+        if (!$explore && !$gallery && !$video) {
+            $detailsActive = "active";
+            $detailsActiveT = "active";
+        }
+    }
+}
+
+//var_dump($checkAllData);
+?>
+
+
+<div id="tabContects" class="tabContects">
+	<!-- Main content area -->
+    <?php
+
+    $this->errorHandler = new ErrorHandlerController;
+
+    /********** No RMP Assets ****************/
+
+    if (isset($productID)) : ?>
+
+        <?php
+        $this->partial('getGalleryLibrary_1');
+        ?>
+		<!--<p>Right col</p>-->
+        <?php
+        if (count($productID) < 1)
+            $sliderVisibility = 'none';
+        else
+            $sliderVisibility = 'block';
+        ?>
+		<div id="galeryItemsWrapper" class="galeryItemsWrapper" style="display: <?php echo $sliderVisibility ?>;">
+			<div id="sliderArea" class="sliderArea">
+				<div id="galeryItemsWrapperCenter" class="galeryItemsWrapperCenter">
+
+				</div>
+			</div>
+		</div>
+
+        <?php
+        die(); endif;
+    ?>
+    <?php
+    /*************** RMP Gallery Lightbox *****************/
+
+    if ($layoutLeft) {
+        $this->partial('getLeftLayout');
+    } else {
+
+    if (count($assetGallerySet["small"]) == 1)
+        $sliderVisibility = 'none';
+    else $sliderVisibility = 'block';
+
+    if ($sliderVisibility == 'none') {
+    ?>
+	<div class="col-1-1 tab-col-1-1 mobile-col-1-1 noPad">
+
+        <?php
+        } else {
+        ?>
+
+		<div class="col-10-12 tab-col-10-12 mobile-col-9-12 noPad">
+            <?php
+            }
+
+            /******** Do We have any assets to show? ****/
+            if (count($assetGallerySet["small"]) != 0) : ?>
+            <?php if ($tabs >= 1) : ?>
+
+            <?php endif;
+            if ($explore) :
+                ?>
+				<div class="tabContent <?= $exploreActive ?>" tabIndex=0>
+                    <?php $this->partial('get360Expo'); ?>
+				</div>
+            <?php endif;
+            if ($video) :
+                ?>
+				<div class="tabContent <?= $videoActive ?>" tabIndex=1>
+                    <?php $this->partial('getVideoLibrary'); ?>
+				</div>
+            <?php endif;
+            if ($details) :
+                ?>
+				<div class="tabContent <?= $detailsActive ?>" tabIndex=2>
+                    <?php $this->partial('getDetailsLibrary'); ?>
+				</div>
+            <?php endif;
+            if ($gallery):
+            ?>
+			<div class="tabContent <?= $galleryActive ?>" style="text-align: center;" tabIndex=3>
+                <?php $this->partial('getGalleryLibrary_2'); ?>
+			</div>
+		</div>
+
+		<div id="galeryItemsWrapper" class="galeryItemsWrapper col-2-12 tab-col-2-12 mobile-col-3-12 noPad"
+		     style="display: <?php echo $sliderVisibility ?>;">
+			<div class="goLeftWrapper">
+				<i id="goUp" class="goLeft nm-font nm-font-caret-up" style="font-size: 35px;"></i>
+			</div>
+			<div id="sliderArea" class="sliderArea">
+				<div class="tabSection" id="galeryItemsWrapperCenter">
+					<ul style="margin: 0px;  padding: 0;">
+                        <?php
+                        if ($explore) :
+                            ?>
+							<li class="galleryListItem">
+								<div id="explore-tab" class="tab '.$exploreActiveT.'" tabIndex=0>
+									<img id="explore-tab-img"
+									     src="<?= $protocol ?><?= $loaddomainname ?>/img/Expo360/Main/ui_images/360icon.png">
+								</div>
+							</li>
+                        <?php endif;
+                        if ($video) :
+                            ?>
+							<li class="galleryListItem">
+								<div id="video-tab" class="tab '.$videoActiveT.'" tabIndex=1>
+									<img id="video-tab-img"
+									     src="<?= $protocol ?><?= $loaddomainname ?>/img/video-play-icon-grey.png">
+								</div>
+							</li>
+                        <?php endif;
+                        if ($details) :
+                            ?>
+							<li class="galleryListItem">
+								<div id="details-tab" class="tab '.$detailsActiveT.'" tabIndex=2>
+									<img id="details-tab-img"
+									     src="<?= $protocol ?><?= $loaddomainname ?>/img/document.png">
+								</div>
+							</li>
+                        <?php endif;
+                        if ($gallery) :
+                        $imageCounter = 0;
+                        foreach ($assetGallerySet["small"] as $ssetGallerySetKey => $assetGalleryValue):
+                            $assetGalleryImageWrapperStyle = "galleryItems2";
+                            ?>
+							<li class="galleryListItem">
+								<div id="gallery-tab" style="text-align: center;" class="tab '.$galleryActiveT.'"
+								     tabIndex=3>
+									<img itemId="1" class="galleryItems" imageIndex="<?= $imageCounter ?>"
+									     id="<?= $assetGalleryImageWrapperStyle ?>"
+									     src="<?= $protocol ?><?= $loaddomainname ?><?= GALLERY_ROOT_ALIAS ?><?= $assetGallerySet["zoom"][$ssetGallerySetKey] . $cacheBuster ?>"/>
+								</div>
+							</li>
+                            <?php $imageCounter++; endforeach; ?>
+					</ul>
+				</div>
+			</div>
+
+
+            <?php endif; ?>
+
+			<div class="goRightWrapper">
+				<i id="goDown" class="goRight nm-font nm-font-caret-down" style="font-size: 35px;"></i>
+			</div>
+		</div>
+
+    <?php endif; ?>
+
+    <?php endif; ?>
+
+	</div>
+</div>
+<?php
+$this->partial('getSocialicons');
+
+}
+
+?>
+

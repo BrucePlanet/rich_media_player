@@ -1,0 +1,204 @@
+<?php
+
+$this->errorHandler = new ErrorHandlerController;
+
+/********** No RMP Assets ****************/
+
+if (isset($productID)) : ?>
+
+    <?php
+    die(count($productID));
+    ?>
+
+	<div id="zoomableWrapper" style="">
+		<!-- No ZOOM -->
+        <?php if (count($productID) >> 1): ?>
+			<div style="float:left; width: 11%">
+				<img style=" margin:0 auto; display: block; opacity: 0.2 ; " id="goLeftMobile"
+				     src="<?= $protocol ?><?= $loaddomainname ?>/img/Expo360/Main/ui_images/previous.png">&nbsp;
+			</div>
+        <?php endif ?>
+        <?php
+        if (count($productID) >> 1)
+            $imageWrapperWidth = 76;
+        else  $imageWrapperWidth = 98;
+        ?>
+
+		<div style="float:left;width: <?= $imageWrapperWidth ?>%">
+            <?php
+            if (count($productID) < 1) { ?>
+				<img id="zoomable" actualImage="0" style="" src="<?= ASSET_SERVER_URL ?>/imgs/5/100141/300/image.jpg"
+				     style="margin: 0 auto"/>
+                <?php
+            } else {
+                ?>
+
+				<img id="zoomable" actualImage="0" style=""
+				     src="<?= ASSET_SERVER_URL ?>/imgs/5/<?= $productID[0]['asset_id'] ?>/800/image.jpg"
+				     style="margin: 0 auto"/>
+                <?php
+            }
+            ?>
+
+		</div>
+        <?php if (count($productID) >> 1): ?>
+			<div style="float:right; width: 11%">
+				<img style=" margin:0 auto; display: ; " id="goRightMobile"
+				     src="<?= $protocol ?><?= $loaddomainname ?>/img/Expo360/Main/ui_images/next.png">&nbsp;
+			</div>
+        <?php endif ?>
+
+	</div>
+    <?php
+    if (count($productID) < 1)
+        $sliderVisibility = 'none';
+    else
+        $sliderVisibility = 'block';
+
+    ?>
+	<div id="galeryItemsWrapper" style="display: <?php echo $sliderVisibility ?>; overflow: hidden;">
+
+		<div style="float: left; width: 10%; ">
+			<img style=" margin:0 auto; display: ; " id="goLeft"
+			     src="<?= $protocol ?><?= $loaddomainname ?>/img/Expo360/Main/ui_images/previous.png">
+		</div>
+
+		<div id="sliderArea" style="float: left; width: 80%; overflow: hidden;">
+
+			<div id="galeryItemsWrapperCenter" style="width:15000px; padding: 0;">
+				<ul style="margin: 0px;  padding: 0;">
+                    <?php
+                    $imageCounter = 0;
+                    foreach ($productID as $ssetGallerySetKey => $assetGalleryValue): ?>
+
+                        <?php
+                        if (count($productID) == ($ssetGallerySetKey + 1))
+                            $assetGalleryImageWrapperStyle = "galleryItems1";
+                        else $assetGalleryImageWrapperStyle = "galleryItems2";
+
+                        ?>
+						<li style="position: relative; left: 0px;  max-width: 130px; float: left;">
+							<!-- No Zoom -->
+							<img itemId="1" class="galleryItems" imageIndex="<?= $imageCounter ?>"
+							     id="<?= $assetGalleryImageWrapperStyle ?>"
+							     src="<?= ASSET_SERVER_URL ?>/imgs/5/<?= $productID[$ssetGallerySetKey]['asset_id'] ?>/800/image.jpg"
+							     style="margin: 0 auto"
+							/>
+						</li>
+
+                        <?php $imageCounter++; endforeach; ?>
+				</ul>
+			</div>
+
+		</div>
+
+		<div style="float: left; width: 10%;">
+			<img style=" margin:0 auto;  display: ; " id="goRight"
+			     src="<?= $protocol ?><?= $loaddomainname ?>/img/Expo360/Main/ui_images/next.png">
+		</div>
+
+	</div>
+
+    <?php
+
+    die(); endif;
+
+
+/*************** RMP Gallery *****************/
+
+if (count($assetGallerySet["small"]) != 0) : ?>
+
+	<div id="zoomableWrapper" style="">
+		<!-- Display ZOOM -->
+        <?php if (count($assetGallerySet["small"]) >> 1): ?>
+			<div style="float:left; width: 11%">
+				<img style=" margin:0 auto; display: block; opacity: 0.2 ; " id="goLeftMobile"
+				     src="<?= $protocol ?><?= $loaddomainname ?>/img/Expo360/Main/ui_images/previous.png">&nbsp;
+			</div>
+
+        <?php endif ?>
+
+        <?php
+        if (count($assetGallerySet["small"]) >> 1)
+            $imageWrapperWidth = 76;
+        else  $imageWrapperWidth = 98;
+        ?>
+
+		<div style="float:left;width: <?= $imageWrapperWidth ?>%">
+			<img id="zoomable" actualImage="0" style=""
+			     src="<?= $protocol ?><?= $loaddomainname ?><?= GALLERY_ROOT_ALIAS ?><?= $assetGallerySet["small"][0] ?>"
+                <?php if ($assetGallerySet["zoomable"][0] == 1): ?>
+					data-magnify-src="<?= $protocol ?><?= $loaddomainname ?><?= GALLERY_ROOT_ALIAS ?><?= $assetGallerySet["zoom"][0] ?>"
+					data-zoom-image="<?= $protocol ?><?= $loaddomainname ?><?= GALLERY_ROOT_ALIAS ?><?= $assetGallerySet["zoom"][0] ?>" zoomable="1"
+                <?php endif;
+
+                if ($assetGallerySet["zoomable"][0] == 0):?>
+					zoomable="0"
+                <?php endif;
+
+                ?>
+			/>
+		</div>
+        <?php if (count($assetGallerySet["small"]) >> 1): ?>
+			<div style="float:right; width: 11%">
+				<img style=" margin:0 auto; display: ; " id="goRightMobile"
+				     src="<?= $protocol ?><?= $loaddomainname ?>/img/Expo360/Main/ui_images/next.png">&nbsp;
+			</div>
+        <?php endif ?>
+
+	</div>
+    <?php
+    if (count($assetGallerySet["small"]) == 1) $sliderVisibility = 'none';
+    else $sliderVisibility = 'block';
+
+    ?>
+	<div id="galeryItemsWrapper" style="display: <?php echo $sliderVisibility ?>; overflow: hidden;">
+
+		<div style="float: left; width: 10%; ">
+			<img style=" margin:0 auto; display: ; " id="goLeft"
+			     src="<?= $protocol ?><?= $loaddomainname ?>/img/Expo360/Main/ui_images/previous.png">
+		</div>
+
+		<div id="sliderArea" style="float: left; width: 80%; overflow: hidden;">
+
+			<div id="galeryItemsWrapperCenter" style="width:15000px; padding: 0;">
+				<ul style="margin: 0px;  padding: 0;">
+                    <?php
+                    $imageCounter = 0;
+                    foreach ($assetGallerySet["small"] as $ssetGallerySetKey => $assetGalleryValue): ?>
+
+                        <?php
+                        if (count($assetGallerySet["small"]) == ($ssetGallerySetKey + 1))
+                            $assetGalleryImageWrapperStyle = "galleryItems1";
+                        else $assetGalleryImageWrapperStyle = "galleryItems2";
+
+                        ?>
+						<li style="position: relative; left: 0px;  max-width: 130px; float: left;">
+							<img itemId="1" class="galleryItems" imageIndex="<?= $imageCounter ?>"
+							     id="<?= $assetGalleryImageWrapperStyle ?>"
+							     src="<?= $protocol ?><?= $loaddomainname ?><?= GALLERY_ROOT_ALIAS ?><?= $assetGallerySet["small"][$ssetGallerySetKey] ?>"
+
+                                <?php
+                                if ($assetGallerySet["zoomable"][$ssetGallerySetKey] == 1):?>
+
+									data-magnify-src="<?= $protocol ?><?= $loaddomainname ?><?= GALLERY_ROOT_ALIAS ?><?= $assetGallerySet["zoom"][$ssetGallerySetKey] ?>"
+									zoomable="1"
+
+                                <?php endif;
+                                if ($assetGallerySet["zoomable"][$ssetGallerySetKey] == 0):?>
+									zoomable="0"
+
+                                <?php endif; ?>
+							/>
+						</li>
+                        <?php $imageCounter++; endforeach; ?>
+				</ul>
+			</div>
+		</div>
+		<div style="float: left; width: 10%;">
+			<img style=" margin:0 auto;  display: ; " id="goRight"
+			     src="<?= $protocol ?><?= $loaddomainname ?>/img/Expo360/Main/ui_images/next.png">
+		</div>
+	</div>
+<?php endif; ?>
+    

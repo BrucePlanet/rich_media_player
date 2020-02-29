@@ -1,0 +1,60 @@
+
+<?php
+
+$this->errorHandler = new ErrorHandlerController;
+
+/********** No RMP Assets ****************/
+
+if (isset($productID)) :  ?>
+	<!-- Click Zoom area -->
+    <?php
+    if (count($productID)>>1)
+        $imageWrapperWidth = 76;
+    else  $imageWrapperWidth = 95;
+    ?>
+	<div class="col-1-1 tab-col-1-1 mobile-col-1-1 noPad">
+		<div class="zoomableWrapper" style="width: <?=$imageWrapperWidth?>%">
+            <?php
+            if (count($productID) < 1) { ?>
+				<img style="width: 50%; margin:12% 25% 25% 27%;" actualImage="0" src="<?= ASSET_SERVER_URL ?>/imgs/5/100141/300/image.jpg"/>
+                <?php
+            }
+            else {
+                ?>
+				<div class="col-1-12 tab-col-1-12 mobile-col-1-12 noPad"></div>
+				<div class="col-10-12 tab-col-10-12 mobile-col-10-12 noPad">
+					<a id="lightbox" href="<?= ASSET_SERVER_URL ?>/imgs/4/<?= $productID[0]['asset_id'] ?>/800/image.jpg" class="open-lightbox" >
+						<img actualImage="0" style="width: 100%;" src="<?= ASSET_SERVER_URL ?>/imgs/4/<?= $productID[0]['asset_id'] ?>/800/image.jpg"/>
+					</a>
+				</div>
+				<div class="col-1-12 tab-col-1-12 mobile-col-1-12 noPad"></div>
+
+                <?php
+            }
+            ?>
+		</div>
+        <?php
+        $this->partial('getSocialicons');
+        ?>
+	</div>
+<?php endif; ?>
+
+<script>
+    (function($) {
+
+        // Open Lightbox
+        $('.open-lightbox').on('click', function(e) {
+            e.preventDefault();
+            var image = $(this).attr('href');
+            $('html').addClass('no-scroll');
+            $('body').append('<div class="lightbox-opened"><img src="' + image + '"></div>');
+        });
+
+        // Close Lightbox
+        $('body').on('click', '.lightbox-opened', function() {
+            $('html').removeClass('no-scroll');
+            $('.lightbox-opened').remove();
+        });
+
+    })(jQuery);
+</script>

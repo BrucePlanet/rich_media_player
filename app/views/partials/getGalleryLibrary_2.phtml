@@ -1,0 +1,42 @@
+
+<?php
+
+$this->errorHandler = new ErrorHandlerController;
+
+/*************** RMP Gallery Lightbox *****************/
+
+if (count($assetGallerySet["small"])!=0) : ?>
+
+	<!-- Display Lightbox -->
+    <?php
+    if (count($assetGallerySet["small"])>>1)
+        $imageWrapperWidth = 76;
+    else  $imageWrapperWidth = 98;
+    ?>
+	<div class="zoomableWrapper" style="width: <?=$imageWrapperWidth?>%">
+		<a id="lightbox" href="<?=$protocol?><?= $loaddomainname ?><?= GALLERY_ROOT_ALIAS ?><?= $assetGallerySet["zoom"][0] . $cacheBuster ?>" class="open-lightbox" >
+			<img id="zoomable" actualImage="0" src="<?=$protocol?><?= $loaddomainname ?><?= GALLERY_ROOT_ALIAS ?><?= $assetGallerySet["small"][0] . $cacheBuster ?>"/>
+		</a>
+	</div>
+
+<?php endif; ?>
+
+<script>
+    (function($) {
+
+        // Open Lightbox
+        $('.open-lightbox').on('click', function(e) {
+            e.preventDefault();
+            var image = $(this).attr('href');
+            $('html').addClass('no-scroll');
+            $('body').append('<div class="lightbox-opened"><img src="' + image + '"></div>');
+        });
+
+        // Close Lightbox
+        $('body').on('click', '.lightbox-opened', function() {
+            $('html').removeClass('no-scroll');
+            $('.lightbox-opened').remove();
+        });
+
+    })(jQuery);
+</script>
