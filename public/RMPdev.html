@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	
+	<meta charset="UTF-8">
+	
+	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+	
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	
+	<script src="http://rich-media-player.kondor.develop"></script>
+	
+	
+	<style>
+		
+		h1, h2, h3, h4, h5, h6, p {
+			font-family: 'Lato', sans-serif;
+		}
+		
+		#header-wrapper {
+			height: 100px;
+			margin: 0px auto;
+			position: fixed;
+			background-color: #4d4d4d;
+			z-index: 100;
+			width: 100%;
+		}
+		
+		#main {
+			width: 100%;
+			height: 100%;
+			float: left;
+			margin-top: 98px;
+		}
+		
+		#wrapper {
+			margin: 1% auto;
+			position: relative;
+			max-width: 1200px;
+			overflow: visible;
+		}
+		
+		.container {
+			min-height: 1000px;
+			height: auto;
+			margin-bottom: 5%;
+		}
+	
+	
+	</style>
+	
+	<script>
+        //it empty string - default RMP style will be used
+        var customCSS ="undefined";
+
+        // Product with all RMP parts
+        // var customCSS ="channel.css";
+        var productCode ="KSHIVE";
+        var channelCode ="EEA_3_14";
+
+        // Product with only gallery
+        // var customCSS ="channel.css";
+        // var productCode ="JASPORT";
+        // var channelCode ="EEA_3_14";
+
+        // Product with a single image
+        // var customCSS ="channel.css";
+        // var productCode ="DPF7BKK";
+        // var channelCode ="EEA_3_14";
+
+        // var productCode = "400012328";
+        // var channelCode = "EEA_3_14";
+
+        // Product from another channel
+        // var customCSS ="channel.css";
+        // var productCode ="WHH800B";
+        // OEM Barcode
+        // var productCode = "4548736055827";
+        // var channelCode ="SON_1_17";
+
+        var channelGACode ="1";
+	</script>
+
+</head>
+<body>
+<div id="o-wrapper" class="o-wrapper col-1-1 mobile-col-1-1 tab-col-1-1 noMar noPad">
+	<div id="header-wrapper">
+		<h1 style="text-align: center; color: #ffffff;">RMP Dev - Timico</h1>
+	</div>
+	<div class="grid noPad">
+	
+	</div>
+	
+	<div id="main">
+		
+		<div id="indexView">
+			
+			<div id="wrapper">
+				
+				<div id="container" class="col-1-1 tab-col-1-1 mobile-col-1-1 noPad">
+					<h1>This is the DEV Assets Server</h1>
+					<div class="product_nav">
+					
+					</div>
+					<div id="content">
+						
+						<div class="grid grid-pad">
+							
+							<div class="inner col-1-1 mobile-col-1-1 tab-col-1-1">
+								<div class="container">
+									<div id="breadcrumb_container">
+										<h6>breadcrumb > breadcrumb > level > 2 </h6>
+									</div>
+									<div class="asset_container">
+										<div class="inner col-6-12 mobile-col-1-1 tab-col-6-12">
+											<!-- Insert your content here -->
+											<div id="RMPContentDiv">
+												<div id="loading">
+													<img id="irc_mi" width="150" height="150" src="/img/buildIcon-generic.gif">
+												</div>
+											</div>
+											<!-- Insert your content here -->
+										</div> <!-- close col-5-12 -->
+									</div> <!-- close asset_container -->
+									<div id="product_details" class="col-6-12 mobile-col-1-1 tab-col-6-12">
+										<div id="title_header">
+											<h2>Brand Name</h2>
+											<h5>£ price</h5>
+											<h5 id="productCode">
+												<script>
+                                                    document.getElementById("productCode").innerHTML = productCode;
+												</script>
+											</h5>
+											<p id="channelCode">
+												<script>
+                                                    document.getElementById("channelCode").innerHTML = channelCode;
+												</script>
+											</p>
+											<h4>In stock</h4>
+											<button>Add to Basket</button>
+											<h2>Product Details</h2>
+											<p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+													Consequuntur cum dignissimos doloribus, mollitia porro praesentium
+													tempore unde veritatis! Accusantium aliquam consectetur
+													consequuntur itaque odio officiis qui quibusdam repellendus sint
+													sit?</span>
+											</p>
+											<p><span>Animi consequatur ea enim exercitationem itaque quae
+														repellat temporibus? Blanditiis in obcaecati repudiandae
+														similique velit! Accusamus aliquam amet aut est eum labore
+														laboriosam, nulla quibusdam, tempore velit voluptas,
+													voluptatibus. Laudantium.</span>
+											</p>
+										</div>
+									</div> <!-- close product_details -->
+								</div><!-- close container -->
+							
+							</div> <!-- close col-1-1 -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
